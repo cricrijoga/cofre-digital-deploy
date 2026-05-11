@@ -1,0 +1,49 @@
+name: Cofre Digital - Deploy Automatizado
+
+on:
+  push:
+    branches: [ main, develop ]
+
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: cofre-digital-app
+
+jobs:
+
+  build:
+    name: Construir Container Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -f docker/Dockerfile -t cofre-digital-app .
+
+  security-check:
+    name: Verificação de Segurança
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Verificar secrets expostos
+        run: |
+          echo "Verificando segurança..."
+
+          if grep -r "password.*=" app/ --exclude-dir=.git; then
+            echo "Possível senha encontrada!"
+            exit 1
+          fi
+
+          if grep -r "api.*key.*=" app/ --exclude-dir=.git; then
+            echo "Possível API KEY encontrada!"
+            exit 1
+          fi
+
+          echo "Nenhum vazamento encontrado!"
