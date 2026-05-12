@@ -14,9 +14,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-env:
-  TOKEN_APP: ${{ secrets.TOKEN_APP }}
-  
+    env:
+      TOKEN_APP: ${{ secrets.TOKEN_APP }}
+
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
