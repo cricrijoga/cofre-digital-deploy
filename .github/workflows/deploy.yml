@@ -18,8 +18,8 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-     - name: Build Docker Image
-       run: docker build -f app/docker/Dockerfile -t cofre-digital-app .
+      - name: Build Docker Image
+        run: docker build -f app/docker/Dockerfile -t cofre-digital-app .
 
   security-check:
     runs-on: ubuntu-latest
